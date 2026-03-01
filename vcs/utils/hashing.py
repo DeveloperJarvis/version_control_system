@@ -34,4 +34,35 @@
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+import hashlib
+from .constants import HASH_ALGORITHM
 
+
+def compute_hash(data: bytes) -> str:
+    """
+    Compute cryptographic hash of given bytes
+
+    Uses algorithm defined in constants
+    """
+    if HASH_ALGORITHM == "sha1":
+        hasher = hashlib.sha1()
+    elif HASH_ALGORITHM == "sha256":
+        hasher = hashlib.sha256()
+    else:
+        raise ValueError(
+            f"Unsupported hash algorithm: {HASH_ALGORITHM}"
+        )
+
+    hasher.update(data)
+    return hasher.hexdigest()
+
+
+def compute_object_hash(object_type: str,
+                        content: bytes) -> str:
+    """
+    Compute Git-style object hash:
+    hash("<type> <size>\\0<content>")
+    """
+    header = f"{object_type} {len(content)}\0".encode()
+    full_data = header + content
+    return compute_hash(full_data)

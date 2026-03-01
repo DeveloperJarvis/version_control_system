@@ -34,4 +34,48 @@
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+from .lcs import lcs_matrix, backtrack_lcs
 
+
+# --------------------------------------------------
+# diff engine
+# --------------------------------------------------
+class DiffEngine:
+    """
+    High-level diff engine using LCS
+    """
+    
+    @staticmethod
+    def diff_text(old: str, new: str) -> str:
+        """
+        Line-based diff between two text blobs
+        """
+        old_lines = old.splitlines()
+        new_lines = new.splitlines()
+
+        dp = lcs_matrix(old_lines, new_lines)
+        lcs = backtrack_lcs(dp, old_lines, new_lines)
+
+        result = []
+        i = j = 0
+
+        for line in lcs:
+            while old_lines[i] != line:
+                result.append(f"- {old_lines[i]}")
+                i += 1
+            while new_lines[j] != line:
+                result.append(f"- {new_lines[j]}")
+                j += 1
+            
+            result.append(f"  {line}")
+            i += 1
+            j += 1
+        
+        while i < len(old_lines):
+            result.append(f"- {old_lines[i]}")
+            i += 1
+        while j < len(new_lines):
+            result.append(f"- {new_lines[j]}")
+            j += 1
+
+        return "\n".join(result)

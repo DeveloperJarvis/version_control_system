@@ -30,8 +30,31 @@
 # --------------------------------------------------
 # __init__ MODULE
 # --------------------------------------------------
+"""
+Utility package for VCS
 
+Contains helper modules for:
+- Hashing
+- File system operations
+- Constants
+"""
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+from .hashing import compute_hash
+from .file_utils import (
+    read_file_bytes,
+    write_file_bytes,
+    ensure_dir,
+    remove_file,
+)
+from .constants import *
 
+
+__all__ = [
+    "compute_hash",
+    "read_file_bytes",
+    "write_file_bytes",
+    "ensure_dir",
+    "remove_file",
+]

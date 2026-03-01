@@ -30,8 +30,22 @@
 # --------------------------------------------------
 # __init__ MODULE
 # --------------------------------------------------
+"""
+Diff module for VCS
 
+Provides:
+- LCS algorithm
+- High-level diff engine
+"""
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+from .lcs import lcs_matrix, backtrack_lcs
+from .diff_engine import DiffEngine
 
+
+__all__ = [
+    "lcs_matrix",
+    "backtrack_lcs",
+    "DiffEngine",
+]
