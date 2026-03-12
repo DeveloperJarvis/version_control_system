@@ -34,4 +34,32 @@
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+from .base import GitObject
+from vcs.utils.constants import OBJECT_TYPE_TREE
 
+
+class Tree(GitObject):
+    """
+    Represents directory snapshot
+    """
+
+    object_type = OBJECT_TYPE_TREE
+
+    def __init__(self):
+        self.entries = []   # list of (name, type, hash)
+    
+    def add_entry(self, name: str, obj_type: str,
+                  obj_hash: str):
+        self.entries.append((name, obj_type, obj_hash))
+    
+    def serialize(self):
+        """
+        Deterministic serialization (sorted)
+        """
+        sorted_entries = sorted(self.entries,
+                                key=lambda x: x[0])
+        lines = [
+            f"{obj_type} {obj_hash} {name}"
+            for name, obj_type, obj_hash in sorted_entries
+        ]
+        return "\n".join(lines).encode()

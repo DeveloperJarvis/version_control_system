@@ -34,4 +34,36 @@
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+import json
+from pathlib import Path
+from vcs.utils.constants import VCS_DIR, INDEX_FILE
+from vcs.utils.file_utils import write_file_text, read_file_text
 
+
+class Index:
+    """
+    Staging area
+    Tracks: file_path -> blob_hash
+    """
+
+    def __init__(self, root: Path):
+        self.root = root
+        self.index_path = root / VCS_DIR / INDEX_FILE
+        self.entries = self._load()
+
+    def _load(self):
+        if not self.index_path.exists():
+            return {}
+        return json.loads(read_file_text(self.index_path))
+    
+    def add(self, file_path: str, blob_hash: str):
+        self.entries[file_path] = blob_hash
+        self._save()
+    
+    def clear(self):
+        self.entries = {}
+        self._save()
+
+    def _save(self):
+        write_file_text(self.index_path,
+                        json.dumps(self.entries, indent=2))

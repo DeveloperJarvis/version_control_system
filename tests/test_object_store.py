@@ -34,4 +34,35 @@
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+import tempfile
+from pathlib import Path
 
+from vcs.object_store import ObjectStore
+from vcs.objects import Blob
+
+def test_write_and_read_objects():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        store = ObjectStore(root)
+
+        blob = Blob(b"hello world")
+        obj_hash = store.write(blob)
+
+        assert store.exists(obj_hash)
+
+        data = store.read(obj_hash)
+        assert data == b"hello world"
+
+
+def test_object_deduplication():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        store = ObjectStore(root)
+
+        blob1 = Blob(b"same")
+        blob2 = Blob(b"same")
+
+        hash1 = store.write(blob1)
+        hash2 = store.write(blob2)
+
+        assert hash1 == hash2

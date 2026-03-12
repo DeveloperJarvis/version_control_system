@@ -35,3 +35,11 @@
 # imports
 # --------------------------------------------------
 
+
+class InitCommand:
+    def __init__(self, repo):
+        self.repo = repo
+    
+    def execute(self):
+        self.repo.init()
+        print("Initialized empty Mini VCS repository.")

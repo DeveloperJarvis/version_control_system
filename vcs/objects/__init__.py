@@ -30,8 +30,21 @@
 # --------------------------------------------------
 # __init__ MODULE
 # --------------------------------------------------
-
+"""
+Git-like object models:
+- Blob
+- Tree
+- Commit
+"""
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+from .blob import Blob
+from .tree import Tree
+from .commit import Commit
 
+__all__ = [
+    "Blob",
+    "Tree",
+    "Commit",
+]

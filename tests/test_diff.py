@@ -34,4 +34,15 @@
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+from vcs.diff.diff_engine import DiffEngine
 
+
+def test_diff_simple_change():
+    old = "line1\nline2\nline3"
+    new = "line1\nlineX\nline3"
+
+    diff = DiffEngine.diff_text(old, new)
+
+    assert "- line2" in diff
+    assert "+ lineX" in diff
+    assert "  line1" in diff

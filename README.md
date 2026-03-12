@@ -266,6 +266,15 @@ By building this project, you will understand:
 - Conflict resolution engine
 - Binary file handling
 - Performance optimizations
+- fast O(1) staging
+
+```md
+vcs status
+vcs merge
+vcs reset
+vcs clone
+.vcsignore
+```
 
 ---
 

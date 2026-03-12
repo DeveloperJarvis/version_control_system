@@ -35,3 +35,12 @@
 # imports
 # --------------------------------------------------
 
+
+class AddCommand:
+    def __init__(self, repo):
+        self.repo = repo
+    
+    def execute(self, files):
+        for file in files:
+            self.repo.add(file)
+            print(f"Added {file}")

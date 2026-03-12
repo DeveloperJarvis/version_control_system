@@ -64,7 +64,7 @@ class DiffEngine:
                 result.append(f"- {old_lines[i]}")
                 i += 1
             while new_lines[j] != line:
-                result.append(f"- {new_lines[j]}")
+                result.append(f"+ {new_lines[j]}")
                 j += 1
             
             result.append(f"  {line}")
@@ -75,7 +75,7 @@ class DiffEngine:
             result.append(f"- {old_lines[i]}")
             i += 1
         while j < len(new_lines):
-            result.append(f"- {new_lines[j]}")
+            result.append(f"+ {new_lines[j]}")
             j += 1
 
         return "\n".join(result)

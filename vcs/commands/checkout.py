@@ -35,3 +35,11 @@
 # imports
 # --------------------------------------------------
 
+
+class CheckoutCommand:
+    def __init__(self, repo):
+        self.repo = repo
+    
+    def execute(self, name):
+        self.repo.refs.checkout(name)
+        print(f"Switched to branch '{name}'.")

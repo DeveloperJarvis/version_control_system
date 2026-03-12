@@ -35,3 +35,11 @@
 # imports
 # --------------------------------------------------
 
+
+class CommitCommand:
+    def __init__(self, repo):
+        self.repo = repo
+    
+    def execute(self, message):
+        commit_hash = self.repo.commit(message)
+        print(f"Commit as {commit_hash}")

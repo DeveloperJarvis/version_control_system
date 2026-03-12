@@ -34,4 +34,31 @@
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+import tempfile
+from pathlib import Path
 
+from vcs.repository import Repository
+
+
+def test_init_creates_repo():
+    with tempfile.TemporaryDirectory() as tmp:
+        repo = Repository(tmp)
+        repo.init()
+
+        assert (Path(tmp) / ".vcs").exists()
+
+
+def test_add_and_commit():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+
+        file_path = root / "test.txt"
+        file_path.write_text("hello")
+
+        repo = Repository(tmp)
+        repo.init()
+        repo.add("test.txt")
+        commmit_hash = repo.commit("Test commit")
+
+        assert commmit_hash is not None
+        assert repo.refs.get_head_commit() == commmit_hash

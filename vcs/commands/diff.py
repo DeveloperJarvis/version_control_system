@@ -34,4 +34,21 @@
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+from vcs.diff.diff_engine import DiffEngine
+from vcs.utils.file_utils import read_file_text
 
+
+class DiffCommand:
+    def __init__(self, repo):
+        self.repo = repo
+    
+    def execute(self):
+        head_commit = self.repo.refs.get_head_commit()
+        if not head_commit:
+            print("No commits to diff.")
+            return
+        
+        print("Diff not fully wired to tree traversal yet.")
+        print(
+            "Extend by reading commit tree and comparing blobs."
+        )

@@ -34,4 +34,27 @@
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+from abc import ABC, abstractmethod
+from vcs.utils.hashing import compute_object_hash
 
+
+class GitObject(ABC):
+    """
+    Abstract base class for all VCS objects
+    """
+
+    object_type: str
+
+    @abstractmethod
+    def serialize(self) -> bytes:
+        """
+        Convert object into storable bytes
+        """
+        pass
+
+    def compute_hash(self) -> str:
+        """
+        Compute content-addressable hash
+        """
+        return compute_object_hash(self.object_type,
+                                   self.serialize())

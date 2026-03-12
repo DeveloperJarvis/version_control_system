@@ -34,4 +34,43 @@
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+from pathlib import Path
+from vcs.utils.constants import VCS_DIR, OBJECTS_DIR
+from vcs.utils.file_utils import (
+    write_file_bytes,
+    read_file_bytes,
+    ensure_dir,
+)
 
+
+class ObjectStore:
+    """
+    Content-addressable storage
+    """
+
+    def __init__(self, root: Path):
+        self.root = root
+        self.objects_path = root / VCS_DIR / OBJECTS_DIR
+
+    def _get_object_path(self, obj_hash: str) -> Path:
+        subdir = obj_hash[:2]
+        filename = obj_hash[2:]
+        path = self.objects_path / subdir
+        ensure_dir(path)
+        return path / filename
+    
+    def write(self, obj):
+        obj_hash = obj.compute_hash()
+        path = self._get_object_path(obj_hash)
+
+        if not path.exists():
+            write_file_bytes(path, obj.serialize())
+        
+        return obj_hash
+    
+    def read(self, obj_hash: str) -> bytes:
+        path = self._get_object_path(obj_hash)
+        return read_file_bytes(path)
+    
+    def exists(self, obj_hash: str) -> bool:
+        return self._get_object_path(obj_hash).exists()

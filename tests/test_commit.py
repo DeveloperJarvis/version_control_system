@@ -34,4 +34,41 @@
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+import tempfile
+from pathlib import Path
 
+from vcs.objects import Commit
+
+
+def test_commit_hash_stability():
+    commit1 = Commit(
+        tree_hash="abc123",
+        parent_hashes=[],
+        author="Tester",
+        message="Initial commit",
+        timestamp=123456,
+    )
+
+    commit2 = Commit(
+        tree_hash="abc123",
+        parent_hashes=[],
+        author="Tester",
+        message="Initial commit",
+        timestamp=123456,
+    )
+
+    assert commit1.compute_hash() == commit2.compute_hash()
+
+
+def test_commit_multiple_parents():
+    commit = Commit(
+        tree_hash="treehash",
+        parent_hashes=["p1", "p2"],
+        author="Tester",
+        message="Merge commit",
+        timestamp=123,
+    )
+
+    serialized = commit.serialize().decode()
+    assert "parent p1" in serialized
+    assert "parent p2" in serialized

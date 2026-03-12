@@ -35,3 +35,10 @@
 # imports
 # --------------------------------------------------
 
+
+class LogCommand:
+    def __init__(self, repo):
+        self.repo = repo
+    
+    def execute(self):
+        self.repo.log()

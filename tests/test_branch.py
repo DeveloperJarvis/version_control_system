@@ -34,4 +34,26 @@
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+import tempfile
+from pathlib import Path
 
+from vcs.repository import Repository
+
+
+def test_branch_creation():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+
+        file_path = root / "a.txt"
+        file_path.write_text("data")
+
+        repo = Repository(tmp)
+        repo.init()
+        repo.add("a.txt")
+        commit_hash = repo.commit("Initial")
+
+        repo.refs.create_branch("feature", commit_hash)
+
+        branch_path = root / ".vcs" / "refs" / "heads" / "feature"
+        assert branch_path.exists()
+        assert branch_path.read_text().strip() == commit_hash

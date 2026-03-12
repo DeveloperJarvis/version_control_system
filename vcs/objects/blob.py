@@ -34,4 +34,20 @@
 # --------------------------------------------------
 # imports
 # --------------------------------------------------
+from .base import GitObject
+from vcs.utils.constants import OBJECT_TYPE_BLOB
 
+
+class Blob(GitObject):
+    """
+    Represents file content
+    Immutable
+    """
+
+    object_type = OBJECT_TYPE_BLOB
+
+    def __init__(self, content: bytes):
+        self.content = content
+    
+    def serialize(self) -> bytes:
+        return self.content

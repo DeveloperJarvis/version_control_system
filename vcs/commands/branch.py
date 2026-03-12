@@ -35,3 +35,12 @@
 # imports
 # --------------------------------------------------
 
+
+class BranchCommand:
+    def __init__(self, repo):
+        self.repo = repo
+    
+    def execute(self, name):
+        head = self.repo.refs.get_head_commit()
+        self.repo.refs.create_branch(name, head)
+        print(f"Branch '{name}' created.")
